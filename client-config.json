@@ -1,0 +1,51 @@
+{
+  "log": {
+    "access": "/var/log/xray/access.log",
+    "error": "/var/log/xray/error.log",
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "217.156.122.113",
+            "port": 443,
+            "users": [
+              {
+                "id": "2e53b4b8-6384-450f-9ca7-9d90a781c42c",
+                "alterId": 0,
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/tunnel",
+          "headers": {
+            "Host": "217.156.122.113"
+          }
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "217.156.122.113",
+          "allowInsecure": false
+        }
+      }
+    }
+  ]
+}
