@@ -20,17 +20,20 @@ sudo mkdir -p /var/log/xray
 
 # Download latest Xray
 LATEST_VERSION=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases/latest | grep tag_name | cut -d'"' -f4)
+echo "📥 Downloading Xray $LATEST_VERSION..."
 wget https://github.com/XTLS/Xray-core/releases/download/${LATEST_VERSION}/Xray-linux-64.zip
-unzip Xray-linux-64.zip
+unzip -o Xray-linux-64.zip
 sudo mv xray /usr/local/bin/
 sudo chmod +x /usr/local/bin/xray
 rm -rf Xray-linux-64.zip
 
 # Copy configuration
 sudo cp client-config.json /etc/xray/config.json
+sudo chown root:root /etc/xray/config.json
+sudo chmod 644 /etc/xray/config.json
 
 # Create systemd service
-sudo tee /etc/systemd/system/xray.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/xray.service > /dev/null <<'EOF'
 [Unit]
 Description=Xray Client Service
 After=network.target
@@ -42,6 +45,8 @@ WorkingDirectory=/etc/xray
 ExecStart=/usr/local/bin/xray -c /etc/xray/config.json
 Restart=on-failure
 RestartSec=5
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=multi-user.target
