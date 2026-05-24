@@ -24,7 +24,7 @@
             "port": 443,
             "users": [
               {
-                "id": "2e53b4b8-6384-450f-9ca7-9d90a781c42c",
+                "id": "45a162c4-3782-4f6e-9d87-20973cec730f",
                 "alterId": 0,
                 "encryption": "none"
               }
@@ -43,7 +43,7 @@
         "security": "tls",
         "tlsSettings": {
           "serverName": "217.156.122.113",
-          "allowInsecure": false
+          "allowInsecure": true
         }
       }
     }
