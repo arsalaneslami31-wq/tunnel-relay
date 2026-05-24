@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  xray-server:
+    build: .
+    container_name: tunnel-relay-server
+    ports:
+      - "443:443"
+    volumes:
+      - ./config-vless-ws.json:/etc/xray/config.json
+      - xray-certs:/etc/xray
+      - xray-logs:/var/log/xray
+    environment:
+      - TZ=UTC
+    restart: unless-stopped
+    networks:
+      - tunnel-network
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/xray", "-version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  xray-certs:
+  xray-logs:
+
+networks:
+  tunnel-network:
+    driver: bridge
